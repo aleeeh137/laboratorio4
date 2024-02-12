@@ -1,0 +1,220 @@
+#programa1
+
+# Implementación de la Pila
+class Pila:
+    def __init__(self):
+        self.elementos = []  # Inicializa la pila vacía
+
+    def push(self, elemento):
+        self.elementos.append(elemento)  # Añade un elemento a la pila
+
+    def pop(self):
+        if not self.esta_vacia():
+            return self.elementos.pop()  # Elimina y devuelve el elemento superior de la pila
+        else:
+            return None
+
+    def peek(self):
+        if not self.esta_vacia():
+            return self.elementos[-1]  # Devuelve el elemento superior sin eliminarlo
+        else:
+            return None
+
+    def esta_vacia(self):
+        return len(self.elementos) == 0  # Verifica si la pila está vacía
+
+# Función para Invertir el Orden de una Lista
+def invertir_lista(lista):
+    pila = Pila()
+    for elemento in lista:
+        pila.push(elemento)
+    
+    lista_invertida = []
+    while not pila.esta_vacia():
+        lista_invertida.append(pila.pop())
+
+    return lista_invertida
+
+# Implementación de la Cola
+class Cola:
+    def __init__(self):
+        self.elementos = []  # Inicializa la cola vacía
+
+    def encolar(self, elemento):
+        self.elementos.append(elemento)  # Añade un elemento al final de la cola
+
+    def desencolar(self):
+        if not self.esta_vacia():
+            return self.elementos.pop(0)  # Elimina y devuelve el primer elemento de la cola
+        else:
+            return None
+
+    def esta_vacia(self):
+        return len(self.elementos) == 0  # Verifica si la cola está vacía
+
+    def mirar(self):
+        if not self.esta_vacia():
+            return self.elementos[0]  # Devuelve el primer elemento sin eliminarlo
+        else:
+            return None
+
+# Ejemplo de uso
+lista_original = [1, 2, 3, 4, 5]
+lista_invertida = invertir_lista(lista_original)
+print("Lista original:", lista_original)
+print("Lista invertida:", lista_invertida)
+
+# Demostración de uso de la Cola
+cola = Cola()
+cola.encolar(1)
+cola.encolar(2)
+cola.encolar(3)
+print("Primer elemento de la cola:", cola.mirar())
+cola.desencolar()
+print("Elemento desencolado. Nuevo primer elemento de la cola:", cola.mirar())
+
+#programa2
+
+#simulando lista de espera de un hospital
+
+#agregar libreria
+
+from collections import deque
+import time
+
+def simular_linea_de_espera(Pasiente):
+    
+    queue = deque(Pasiente)
+    print(queue, "\n")
+    
+    while queue:
+        print("Atendiendo al cliente" , queue.popleft())
+        time.sleep(1)
+
+Pasiente_en_espera = ["Pasiente 1",  "Pasiente 2", "Pasiente 3", "Pasiente 4"]
+
+print("Bienvenido al banco, se les estara atendiendo en orden")
+simular_linea_de_espera(Pasiente_en_espera)
+print("Todos los pasientes han sido atendidos")
+
+
+#Programa3
+
+class Pila:
+    def __init__(self):
+        self.elementos = []
+
+    def push(self, elemento):
+        self.elementos.append(elemento)
+
+    def pop(self):
+        if not self.esta_vacia():
+            return self.elementos.pop()
+        else:
+            return None
+
+    def esta_vacia(self):
+        return len(self.elementos) == 0
+
+def estan_balanceados(parentesis):
+    pila = Pila()
+    for caracter in parentesis:
+        if caracter == '(':
+            pila.push(caracter)
+        elif caracter == ')':
+            if pila.esta_vacia():
+                return False  # No hay paréntesis abierto correspondiente
+            pila.pop()
+    
+    # Si la pila está vacía, todos los paréntesis están balanceados
+    return pila.esta_vacia()
+
+# Ejemplo de uso
+cadena = "((()))"
+print(f"Los paréntesis en '{cadena}' están balanceados:", estan_balanceados(cadena))
+
+cadena = "(()"
+print(f"Los paréntesis en '{cadena}' están balanceados:", estan_balanceados(cadena))
+
+cadena = "())("
+print(f"Los paréntesis en '{cadena}' están balanceados:", estan_balanceados(cadena))
+
+#programa4
+
+class Pila:
+    def __init__(self):
+        self.elementos = []
+
+    def push(self, elemento):
+        self.elementos.append(elemento)
+
+    def pop(self):
+        if not self.esta_vacia():
+            return self.elementos.pop()
+        else:
+            return None
+
+    def esta_vacia(self):
+        return len(self.elementos) == 0
+
+    def tamano(self):
+        return len(self.elementos)
+
+class ColaConPilas:
+    def __init__(self):
+        self.pila1 = Pila()
+        self.pila2 = Pila()
+
+    def encolar(self, elemento):
+        # Siempre encolamos en la pila1
+        self.pila1.push(elemento)
+
+    def desencolar(self):
+        if self.pila2.esta_vacia():
+            # Si pila2 está vacía, transferimos todos los elementos de pila1 a pila2
+            while not self.pila1.esta_vacia():
+                self.pila2.push(self.pila1.pop())
+        # Desencolamos (sacamos) el elemento superior de pila2
+        return self.pila2.pop()
+
+    def esta_vacia(self):
+        # La cola está vacía si ambas pilas están vacías
+        return self.pila1.esta_vacia() and self.pila2.esta_vacia()
+
+# Ejemplo de uso
+cola = ColaConPilas()
+cola.encolar(1)
+cola.encolar(2)
+cola.encolar(3)
+print(cola.desencolar())  # Debería mostrar 1
+cola.encolar(4)
+print(cola.desencolar())  # Debería mostrar 2
+
+#programa 5
+
+def revertir_mitad_cola(cola):
+    pila = Pila()  # Pila adicional para la inversión
+    n = cola.tamano()  # Tamaño de la cola
+    mitad = n // 2  # Determinamos la mitad del tamaño de la cola
+
+    # Paso 1: Mover la primera mitad de la cola a la pila
+    for _ in range(mitad):
+        pila.push(cola.desencolar())
+
+    # Paso 2: Mover los elementos de la pila (mitad invertida) de vuelta a la cola
+    while not pila.esta_vacia():
+        cola.encolar(pila.pop())
+
+    # Paso 3: Mover la segunda mitad de la cola al final para mantener su orden
+    for _ in range(n - mitad):
+        cola.encolar(cola.desencolar())
+
+    # Paso 4: Colocar la mitad invertida en su posición original en la cola
+    for _ in range(mitad):
+        pila.push(cola.desencolar())
+
+    while not pila.esta_vacia():
+        cola.encolar(pila.pop())
+
+
+
